@@ -26,7 +26,7 @@ const HomePage = () => {
       <BarraDePesquisa tratarPesquisa={(t) => setTermo(t)} />
 
       <div className="mt-6 flex flex-col gap-3">
-        {pesquisandoLivros && <p className="text-gray-600">Pesquisando...</p>}
+        {pesquisandoLivros && !(livros?.length === 0) && <p className="text-gray-600">Pesquisando...</p>}
 
         {!pesquisandoLivros && termo.trim() !== "" && livros?.length === 0 && (
           <p className="text-gray-600">Nenhum livro encontrado para "{termo}".</p>
