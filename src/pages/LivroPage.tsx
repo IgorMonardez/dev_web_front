@@ -19,9 +19,9 @@ const LivroPage = () => {
         ← Voltar para a pesquisa
       </Link>
 
-      <h1 className="mt-4 text-3xl font-bold text-gray-800">{livro.titulo}</h1>
-      <p className="mt-1 text-lg text-gray-600">{livro.autor.join(", ")}</p>
-      <p className="mt-1 text-sm text-gray-500">ISBN: {livro.isbn}</p>
+      <h1 className="mt-4 text-3xl font-bold text-gray-800">{livro.title}</h1>
+      <p className="mt-1 text-lg text-gray-600">{livro.authors.join(", ")}</p>
+      {/*<p className="mt-1 text-sm text-gray-500">ISBN: {livro.isbn}</p>*/}
 
       <section className="mt-6">
         <h2 className="mb-2 text-xl font-semibold text-gray-800">Preços</h2>
