@@ -8,7 +8,7 @@ const usePesquisarLivros = (termo: string) => {
   const { recuperar } =UseAPI<Livro>("/livros");
 
   return useQuery({
-    queryKey: ["livros"],
+    queryKey: ["livros", termo],
     queryFn: () => recuperar({q: termo}),
     enabled: termo.trim() !== "", // só busca quando há termo
   });

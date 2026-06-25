@@ -1,33 +1,94 @@
-import { Link } from "react-router-dom";
 import type { Livro } from "../interfaces/Livro";
+import type { Nota } from "../interfaces/Nota.ts";
 
 interface Props {
   livro: Livro;
 }
 
-const calcularMedia = (valores: number[]) => {
-  if (valores.length === 0) return 0;
-  return valores.reduce((soma, valor) => soma + valor, 0) / valores.length;
+const calcularMedia = (notas: Nota[]) => {
+  if (notas.length === 0) return 0;
+  const total = notas.reduce((soma, n) => soma + parseFloat(n.nota), 0);
+  return total / notas.length;
 };
 
 const CardLivro = ({ livro }: Props) => {
-  const menorPreco = Math.min(...livro.preco);
-  const ratingMedio = calcularMedia(livro.rating);
+
+  const media = calcularMedia(livro.ratings);
 
   return (
-    <Link
-      to={`/livros/${livro.isbn}`}
-      className="block rounded-lg border-2 border-gray-200 p-4 transition hover:border-gray-400 hover:shadow"
-    >
-      <h2 className="text-lg font-semibold text-gray-800">{livro.titulo}</h2>
-      <p className="text-sm text-gray-600">{livro.autor.join(", ")}</p>
-      <div className="mt-2 flex justify-between text-sm">
-        <span className="font-medium text-green-700">
-          A partir de R$ {menorPreco.toFixed(2)}
-        </span>
-        <span className="text-amber-600">★ {ratingMedio.toFixed(1)}</span>
+    <div className="mx-auto max-w-3xl p-4">
+      <h1 className="text-3xl font-bold text-gray-800">{livro.title}</h1>
+      {livro.subtitle && (
+        <h2 className="text-xl text-gray-600">{livro.subtitle}</h2>
+      )}
+      <p className="mt-1 text-gray-700">
+        <span className="font-semibold">Autor(es):</span> {livro.authors.join(", ")}
+      </p>
+      <p className="text-gray-700">
+        <span className="font-semibold">Ano:</span> {livro.year}
+      </p>
+      <p className="text-gray-700">
+        <span className="font-semibold">OLID:</span> {livro.OLid}
+      </p>
+      <p className="mt-2">
+        <a
+          href={livro.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 hover:underline"
+        >
+          Ver no Open Library
+        </a>
+      </p>
+
+      <div className="mt-6">
+        <h3 className="text-xl font-semibold text-gray-800">
+          Avaliações de sites parceiros
+        </h3>
+        {livro.ratings.length === 0 ? (
+          <p className="text-gray-600">Nenhuma nota disponível.</p>
+        ) : (
+          <>
+            <p className="mt-1 text-amber-600 font-medium">
+              ★ Média geral: {media.toFixed(1)}
+            </p>
+            <div className="mt-3 space-y-3">
+              {livro.ratings.map((nota, index) => (
+                <div
+                  key={index}
+                  className="rounded border border-gray-200 p-3 flex items-start gap-3"
+                >
+                  <img
+                    src={nota.logo}
+                    alt={nota.site}
+                    className="h-8 w-8 object-contain"
+                  />
+                  <div className="flex-1">
+                    <div className="flex justify-between">
+                      <span className="font-medium">{nota.site}</span>
+                      <span className="text-amber-600">
+                        {nota.nota} / {nota.notaMaxima}
+                      </span>
+                    </div>
+                    <p className="text-sm text-gray-500">
+                      Coletado em: {new Date(nota.dataColeta).toLocaleDateString()}
+                    </p>
+                    <a
+                      href={nota.urlPagina}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-blue-600 hover:underline"
+                    >
+                      Ver avaliação completa
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
       </div>
-    </Link>
+    </div>
   );
 };
 

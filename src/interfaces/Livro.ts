@@ -1,7 +1,11 @@
+import type { Nota } from "./Nota.ts";
+
 export interface Livro {
-  isbn: string; // identificador único do livro
-  titulo: string;
-  autor: string[];
-  preco: number[]; // preços coletados de diferentes fontes
-  rating: number[]; // avaliações coletadas de diferentes fontes
+  title: string;
+  subtitle: string;
+  authors: string[];
+  year: string;
+  url: string;
+  OLid: string;   // ou 'olid' se preferir, mas tem que casar
+  ratings: Nota[];
 }

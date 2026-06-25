@@ -33,7 +33,7 @@ const HomePage = () => {
         )}
 
         {livros?.map((livro) => (
-          <CardLivro key={livro.isbn} livro={livro} />
+          <CardLivro key={livro.OLid} livro={livro} />
         ))}
       </div>
     </div>
