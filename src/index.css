@@ -61,47 +61,52 @@ body {
   box-shadow: 0 8px 6px -8px rgba(0, 0, 0, 0.4);
 }
 
-/* ---- Animação de carregamento: 3 livros pulsando em onda ---- */
+/* ---- Animação de carregamento: 3 livros encostados pulando em onda ---- */
+/* Altura reservada para o "pulo" não invadir a barra de pesquisa acima. */
 .loading-livros {
   display: flex;
   align-items: flex-end;
-  gap: 0.4rem;
+  gap: 1px;
+  height: 2.6rem;
 }
 
+/* Cada "livro": lombada em pé, com a dobra (binding) arredondada à esquerda,
+   bandas de capa (topo/base) e brilho das páginas na borda direita. */
 .livro-pulando {
-  display: inline-block;
-  width: 0.6rem;
-  border-radius: 2px 2px 0 0;
-  transform-origin: bottom center;
-  animation: pulsar-livro 0.9s ease-in-out infinite;
+  display: block;
+  width: 0.9rem;
+  height: 1.8rem;
+  border-radius: 7px 2px 2px 7px;
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.2),
+    inset -2px 0 0 rgba(255, 255, 255, 0.35);
+  animation: pular-livro 0.9s ease-in-out infinite;
 }
 
 .livro-pulando:nth-child(1) {
-  height: 1.4rem;
   background-color: var(--color-madeira);
   animation-delay: 0s;
 }
 
 .livro-pulando:nth-child(2) {
-  height: 1.9rem;
   background-color: var(--color-dourado);
   animation-delay: 0.15s;
 }
 
 .livro-pulando:nth-child(3) {
-  height: 1.6rem;
   background-color: var(--color-madeira-escura);
   animation-delay: 0.3s;
 }
 
-@keyframes pulsar-livro {
+@keyframes pular-livro {
   0%,
   100% {
-    transform: scaleY(1);
-    opacity: 0.65;
+    transform: translateY(0);
+    opacity: 0.7;
   }
   50% {
-    transform: scaleY(1.5);
+    transform: translateY(-0.6rem);
     opacity: 1;
   }
 }
