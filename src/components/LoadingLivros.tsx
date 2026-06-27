@@ -5,7 +5,7 @@ interface Props {
 const LoadingLivros = ({ texto = "Pesquisando..." }: Props) => {
   return (
     <div className="mt-5 flex items-end gap-3" role="status" aria-label={texto}>
-      <div className="loading-livros" aria-hidden="true">
+      <div className="loading-estante" aria-hidden="true">
         <span className="livro-pulando" />
         <span className="livro-pulando" />
         <span className="livro-pulando" />

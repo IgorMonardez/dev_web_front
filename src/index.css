@@ -61,40 +61,56 @@ body {
   box-shadow: 0 8px 6px -8px rgba(0, 0, 0, 0.4);
 }
 
-/* ---- Animação de carregamento: 3 livros encostados pulando em onda ---- */
-/* Altura reservada para o "pulo" não invadir a barra de pesquisa acima. */
-.loading-livros {
-  display: flex;
+/* ---- Animação: 3 livros em pé numa estante, pulando em onda ---- */
+/* Container reserva altura (livro mais alto + pulo) e desenha a prateleira. */
+.loading-estante {
+  position: relative;
+  display: inline-flex;
   align-items: flex-end;
-  gap: 1px;
-  height: 2.6rem;
+  gap: 3px;
+  height: 3rem;
+  padding: 0 5px 8px;
 }
 
-/* Cada "livro": lombada em pé, com a dobra (binding) arredondada à esquerda,
-   bandas de capa (topo/base) e brilho das páginas na borda direita. */
+/* Prateleira de madeira sob os livros */
+.loading-estante::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 6px;
+  border-radius: 2px;
+  background-color: var(--color-madeira-escura);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.35);
+}
+
+/* Cada livro em pé (lombada vertical): topo arredondado + bandas de capa */
 .livro-pulando {
   display: block;
-  width: 0.9rem;
-  height: 1.8rem;
-  border-radius: 7px 2px 2px 7px;
+  width: 0.7rem;
+  border-radius: 3px 3px 1px 1px;
   box-shadow:
-    inset 0 3px 0 rgba(255, 255, 255, 0.28),
-    inset 0 -3px 0 rgba(0, 0, 0, 0.2),
-    inset -2px 0 0 rgba(255, 255, 255, 0.35);
+    inset 0 0 0 1px rgba(0, 0, 0, 0.1),
+    inset 0 5px 0 -3px rgba(255, 255, 255, 0.4),
+    inset 0 -7px 0 -5px rgba(0, 0, 0, 0.2);
   animation: pular-livro 0.9s ease-in-out infinite;
 }
 
 .livro-pulando:nth-child(1) {
+  height: 2rem;
   background-color: var(--color-madeira);
   animation-delay: 0s;
 }
 
 .livro-pulando:nth-child(2) {
+  height: 2.5rem;
   background-color: var(--color-dourado);
   animation-delay: 0.15s;
 }
 
 .livro-pulando:nth-child(3) {
+  height: 2.2rem;
   background-color: var(--color-madeira-escura);
   animation-delay: 0.3s;
 }
@@ -103,10 +119,8 @@ body {
   0%,
   100% {
     transform: translateY(0);
-    opacity: 0.7;
   }
   50% {
-    transform: translateY(-0.6rem);
-    opacity: 1;
+    transform: translateY(-0.4rem);
   }
 }
