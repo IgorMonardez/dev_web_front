@@ -1,46 +1,79 @@
-# Getting Started with Create React App
+# dev_web_front — Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Interface web para pesquisa de livros com exibição de avaliações e preços em tempo real.
 
-## Available Scripts
+## Tecnologias
 
-In the project directory, you can run:
+- React 19 + TypeScript
+- Vite 8
+- Tailwind CSS 4
+- React Query v5 (@tanstack/react-query) — cache e requisições assíncronas
+- React Router v7
 
-### `npm start`
+## Como rodar
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Pré-requisitos
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- Node.js instalado
+- Backend (`DevWeb`) rodando em `http://localhost:8080`
 
-### `npm test`
+### Instalar e iniciar
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+npm install
+npm run dev
+```
 
-### `npm run build`
+O app abre em `http://localhost:5173`.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Funcionalidades implementadas
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **Pesquisa de livros**: campo de busca que consulta o backend, exibe indicador de carregamento e mensagens de erro
+- **Grid de resultados**: cards exibidos em grade responsiva (1 coluna → 2 → 3 conforme a tela)
+- **Capa do livro**: imagem carregada via Open Library Covers API
+- **Carregamento paralelo**: os cards aparecem assim que a busca retorna; notas e preços carregam independentemente em cada card
+- **Avaliações**: exibe nota do Open Library com logo, data de coleta e link para a fonte
+- **Preços**: exibe preços do Mercado Livre com link direto para o produto
+- **Retry com backoff exponencial**:
+  - Notas: até 10 tentativas, delay de `min(1000 * 2^n, 60000)` ms
+  - Preços: até 4 tentativas, mesmo backoff
+- **Distinção de estados de nota**: `not_available` (sem avaliação no Open Library) vs `error` (falha de conexão — dispara retry)
+- **Cache**: resultados de busca válidos por 5 min, notas e preços por 10 min, sem refetch ao focar a aba
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Estrutura do projeto
 
-### `npm run eject`
+```
+src/
+├── components/
+│   ├── CardLivro.tsx          # Card de livro com notas e preços (componente principal)
+│   ├── BarraDePesquisa.tsx    # Input de pesquisa
+│   └── NavBar.tsx             # Barra de navegação
+├── hooks/livro/
+│   ├── usePesquisarLivros.ts          # Busca lista de livros no backend
+│   ├── useRecuperarNotasPorOlid.ts    # Busca notas de um livro (por card)
+│   └── useRecuperarPrecos.ts          # Busca preços de um livro (por card)
+├── interfaces/
+│   ├── Livro.ts               # Tipo do livro
+│   ├── Nota.ts                # Tipo de uma avaliação
+│   ├── NotasResponse.ts       # Envelope de notas (status + lista)
+│   ├── Preco.ts               # Tipo de um preço
+│   └── PrecosResponse.ts      # Envelope de preços (status + lista)
+├── pages/
+│   ├── HomePage.tsx           # Página principal (pesquisa + grid de cards)
+│   ├── LivroPage.tsx          # Página individual do livro (não implementada)
+│   └── ErrorPage.tsx          # Página de erro de rota
+├── routes/
+│   ├── router.tsx             # Definição de rotas
+│   └── Layout.tsx             # Layout com NavBar
+└── util/
+    └── constantes.ts          # URL_BASE do backend
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## O que ainda falta implementar
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- **Página individual do livro** (`LivroPage.tsx`): a rota existe mas a página está vazia. A ideia é exibir todos os detalhes do livro ao clicar em um card.
+- **`useRecuperarLivroPorIsbn`**: hook esboçado mas não conectado a nenhuma tela.
+- **`BookCard.tsx`**: componente mais antigo/mock ainda presente na pasta, pode ser removido ou substituído pelo `CardLivro`.
+- **Paginação / scroll infinito**: a busca retorna todos os resultados de uma vez sem paginação no frontend.
+- **Filtros e ordenação**: não há como filtrar por ano, autor ou ordenar por nota/preço.
+- **Testes**: nenhum teste implementado.

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="144" viewBox="0 0 96 144">
+  <rect width="96" height="144" fill="#e5e7eb" rx="4"/>
+  <rect x="10" y="10" width="76" height="124" fill="#d1d5db" rx="2"/>
+  <line x1="18" y1="10" x2="18" y2="134" stroke="#9ca3af" stroke-width="2"/>
+  <text x="53" y="70" font-family="sans-serif" font-size="11" fill="#6b7280" text-anchor="middle">Sem</text>
+  <text x="53" y="85" font-family="sans-serif" font-size="11" fill="#6b7280" text-anchor="middle">capa</text>
+</svg>
