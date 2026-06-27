@@ -1,6 +1,6 @@
 import { useState } from "react";
 import BarraDePesquisa from "../components/BarraDePesquisa";
-import CardLivro from "../components/CardLivro";
+import CardLivroResumo from "../components/CardLivroResumo";
 import usePesquisarLivros from "../hooks/livro/usePesquisarLivros";
 
 const HomePage = () => {
@@ -34,7 +34,7 @@ const HomePage = () => {
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 
         {livros?.map((livro) => (
-          <CardLivro key={livro.OLid} livro={livro} />
+          <CardLivroResumo key={livro.OLid} livro={livro} />
         ))}
       </div>
     </div>

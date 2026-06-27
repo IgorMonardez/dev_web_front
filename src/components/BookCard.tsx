@@ -1,4 +1,4 @@
-import { Book } from "../data/mockBooks";
+import type { Book } from "../data/mockBooks";
 import "./BookCard.css";
 
 interface Props {

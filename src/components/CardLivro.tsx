@@ -3,18 +3,13 @@ import type { Nota } from "../interfaces/Nota.ts";
 import useRecuperarNotasPorOlid from "../hooks/livro/useRecuperarNotasPorOlid";
 import useRecuperarNotaGoodreads from "../hooks/livro/useRecuperarNotaGoodreads";
 import useRecuperarPrecos from "../hooks/livro/useRecuperarPrecos";
+import { calcularMedia } from "../util/calcularMedia";
 
 interface Props {
   livro: Livro;
 }
 
 const LOGO_OPEN_LIBRARY = "/logos/openlibrary-logo-tighter.svg";
-
-const calcularMedia = (notas: Nota[]) => {
-  if (notas.length === 0) return 0;
-  const total = notas.reduce((soma, n) => soma + parseFloat(n.nota), 0);
-  return total / notas.length;
-};
 
 const obterSubtituloValido = (subtitle?: string | null) => {
   const valor = subtitle?.trim();
