@@ -1,5 +1,7 @@
 import type { Livro } from "../interfaces/Livro";
 import type { Nota } from "../interfaces/Nota.ts";
+import useRecuperarNotasPorOlid from "../hooks/livro/useRecuperarNotasPorOlid";
+import useRecuperarPrecos from "../hooks/livro/useRecuperarPrecos";
 
 interface Props {
   livro: Livro;
@@ -31,13 +33,26 @@ const resolverLogo = (nota: Nota) => {
 };
 
 const CardLivro = ({ livro }: Props) => {
+  const { data: notasResponse, isPending: carregandoNotas, isError: erroNotas } = useRecuperarNotasPorOlid(livro.OLid);
+  const { data: precosResponse, isPending: carregandoPrecos, isError: erroPrecos } = useRecuperarPrecos(livro.OLid, livro.title);
+  const notas = notasResponse?.notas ?? [];
+  const statusNotas = notasResponse?.status;
 
-  const media = calcularMedia(livro.ratings);
+  const media = calcularMedia(notas);
   const subtitle = obterSubtituloValido(livro.subtitle);
 
   return (
-    <div className="mx-auto max-w-3xl p-4">
-      <h1 className="text-3xl font-bold text-gray-800">{livro.title}</h1>
+    <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+      <div className="flex gap-4">
+        {livro.coverId && (
+          <img
+            src={`https://covers.openlibrary.org/b/id/${livro.coverId}-M.jpg`}
+            alt={`Capa de ${livro.title}`}
+            className="h-36 w-24 object-cover rounded shadow"
+          />
+        )}
+        <div>
+          <h1 className="text-3xl font-bold text-gray-800">{livro.title}</h1>
       {subtitle && (
         <h2 className="text-xl text-gray-600">{subtitle}</h2>
       )}
@@ -60,20 +75,26 @@ const CardLivro = ({ livro }: Props) => {
           Ver no Open Library
         </a>
       </p>
+        </div>
+      </div>
 
       <div className="mt-6">
         <h3 className="text-xl font-semibold text-gray-800">
           Avaliações de sites parceiros
         </h3>
-        {livro.ratings.length === 0 ? (
-          <p className="text-gray-600">Nenhuma nota disponível.</p>
+        {carregandoNotas ? (
+          <p className="text-gray-400 text-sm">Carregando notas...</p>
+        ) : erroNotas ? (
+          <p className="text-red-400 text-sm">Não foi possível buscar a nota após 5 tentativas.</p>
+        ) : statusNotas === "not_available" ? (
+          <p className="text-gray-500 text-sm">Nenhuma nota disponível no Open Library.</p>
         ) : (
           <>
             <p className="mt-1 text-amber-600 font-medium">
               ★ Média geral: {media.toFixed(1)}
             </p>
             <div className="mt-3 space-y-3">
-              {livro.ratings.map((nota, index) => {
+              {notas.map((nota, index) => {
                 const logoSrc = resolverLogo(nota);
 
                 return (
@@ -112,6 +133,35 @@ const CardLivro = ({ livro }: Props) => {
               })}
             </div>
           </>
+        )}
+      </div>
+
+      <div className="mt-6">
+        <h3 className="text-xl font-semibold text-gray-800">Preços</h3>
+        {carregandoPrecos ? (
+          <p className="text-gray-400 text-sm">Carregando preços...</p>
+        ) : erroPrecos ? (
+          <p className="text-red-400 text-sm">Não foi possível buscar preços.</p>
+        ) : precosResponse?.status === "not_available" ? (
+          <p className="text-gray-500 text-sm">Nenhum preço encontrado.</p>
+        ) : (
+          <div className="mt-2 space-y-2">
+            {precosResponse?.precos.map((preco, index) => (
+              <div key={index} className="flex items-center justify-between rounded border border-gray-200 p-2">
+                <span className="font-medium text-green-700">
+                  R$ {preco.preco.toFixed(2).replace(".", ",")}
+                </span>
+                <a
+                  href={preco.urlPagina}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-blue-600 hover:underline"
+                >
+                  Ver no {preco.site}
+                </a>
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </div>

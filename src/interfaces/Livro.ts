@@ -6,6 +6,7 @@ export interface Livro {
   authors: string[];
   year: string;
   url: string;
-  OLid: string;   // ou 'olid' se preferir, mas tem que casar
+  OLid: string;
+  coverId?: number;
   ratings: Nota[];
 }

@@ -10,7 +10,9 @@ const usePesquisarLivros = (termo: string) => {
   return useQuery({
     queryKey: ["livros", termo],
     queryFn: () => recuperar({q: termo}),
-    enabled: termo.trim() !== "", // só busca quando há termo
+    enabled: termo.trim() !== "",
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
   });
 };
 
