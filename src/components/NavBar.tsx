@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 
 const NavBar = () => {
   return (
-    <nav className="mb-6 bg-gray-100 py-4">
+    <nav className="navbar-estante mb-6 py-4">
       <div className="mx-3 md:mx-10 lg:mx-20">
-        <Link to="/" className="text-xl font-semibold text-gray-800">
+        <Link to="/" className="text-xl font-semibold text-[#fbf6ea]">
           📚 Busca de Livros
         </Link>
       </div>

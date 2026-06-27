@@ -3,18 +3,13 @@ import type { Nota } from "../interfaces/Nota.ts";
 import useRecuperarNotasPorOlid from "../hooks/livro/useRecuperarNotasPorOlid";
 import useRecuperarNotaGoodreads from "../hooks/livro/useRecuperarNotaGoodreads";
 import useRecuperarPrecos from "../hooks/livro/useRecuperarPrecos";
+import { calcularMedia } from "../util/calcularMedia";
 
 interface Props {
   livro: Livro;
 }
 
 const LOGO_OPEN_LIBRARY = "/logos/openlibrary-logo-tighter.svg";
-
-const calcularMedia = (notas: Nota[]) => {
-  if (notas.length === 0) return 0;
-  const total = notas.reduce((soma, n) => soma + parseFloat(n.nota), 0);
-  return total / notas.length;
-};
 
 const obterSubtituloValido = (subtitle?: string | null) => {
   const valor = subtitle?.trim();
@@ -47,7 +42,7 @@ const CardLivro = ({ livro }: Props) => {
   const subtitle = obterSubtituloValido(livro.subtitle);
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+    <div className="rounded-lg border border-[#e0d2ad] bg-[#fbf6ea] p-4 shadow-sm">
       <div className="flex gap-4">
         <img
           src={livro.coverId

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import BarraDePesquisa from "../components/BarraDePesquisa";
-import CardLivro from "../components/CardLivro";
+import CardLivroResumo from "../components/CardLivroResumo";
+import LoadingLivros from "../components/LoadingLivros";
 import usePesquisarLivros from "../hooks/livro/usePesquisarLivros";
 
 const HomePage = () => {
@@ -15,26 +16,26 @@ const HomePage = () => {
 
   return (
     <div className="mx-auto max-w-6xl">
-      <h1 className="mb-2 text-center text-3xl font-bold text-gray-800">
-        Pesquisa de Livros
+      <h1 className="mb-2 text-center text-3xl font-bold text-[#4a2f1b]">
+        📚 Acervo de Livros
       </h1>
-      <p className="mb-6 text-center text-gray-600">
+      <p className="mb-6 text-center text-[#7b4f2c]">
         Encontre preços e avaliações de livros em diversas fontes.
       </p>
 
       <div className="mx-auto max-w-xl">
         <BarraDePesquisa tratarPesquisa={(t) => setTermo(t)} />
-        {pesquisandoLivros && termo.trim() !== "" && <p className="mt-2 text-gray-600">Pesquisando...</p>}
-        {erroBuscaLivros && <p className="mt-2 text-red-500">Erro ao buscar livros. Tente novamente.</p>}
+        {pesquisandoLivros && termo.trim() !== "" && <LoadingLivros />}
+        {erroBuscaLivros && <p className="mt-2 text-red-600">Erro ao buscar livros. Tente novamente.</p>}
         {!pesquisandoLivros && !erroBuscaLivros && termo.trim() !== "" && livros?.length === 0 && (
-          <p className="mt-2 text-gray-600">Nenhum livro encontrado para "{termo}".</p>
+          <p className="mt-2 text-[#7b4f2c]">Nenhum livro encontrado para "{termo}".</p>
         )}
       </div>
 
-      <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="prateleira mt-6 grid grid-cols-1 gap-4 pb-4 sm:grid-cols-2 lg:grid-cols-3">
 
         {livros?.map((livro) => (
-          <CardLivro key={livro.OLid} livro={livro} />
+          <CardLivroResumo key={livro.OLid} livro={livro} />
         ))}
       </div>
     </div>

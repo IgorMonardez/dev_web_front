@@ -1,7 +1,22 @@
 @import "tailwindcss";
 
+/* Paleta "estante / biblioteca": madeira + pergaminho + dourado */
+@theme {
+  --color-pergaminho: #f4ecd9;
+  --color-pergaminho-claro: #fbf6ea;
+  --color-madeira: #7b4f2c;
+  --color-madeira-escura: #4a2f1b;
+  --color-dourado: #c08a2d;
+  --color-tinta: #3b2f23;
+}
+
+body {
+  background-color: var(--color-pergaminho);
+  color: var(--color-tinta);
+}
+
 .btn-primary {
-    @apply rounded-lg bg-blue-700 px-4 py-2 text-white hover:bg-blue-800 not-disabled:cursor-pointer disabled:cursor-not-allowed disabled:opacity-50;
+    @apply rounded-lg bg-[#7b4f2c] px-4 py-2 text-[#fbf6ea] hover:bg-[#4a2f1b] not-disabled:cursor-pointer disabled:cursor-not-allowed disabled:opacity-50;
 }
 
 .btn-secondary {
@@ -9,5 +24,103 @@
 }
 
 .input {
-    @apply w-full rounded-lg border-2 border-gray-400 p-2 text-base outline-none focus:border-gray-800;
+    @apply w-full rounded-lg border-2 border-[#c8a96a] bg-[#fbf6ea] p-2 text-base outline-none focus:border-[#7b4f2c];
+}
+
+/* Barra de navegação com cara de prateleira de madeira */
+.navbar-estante {
+  background-color: var(--color-madeira-escura);
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.12) 0px,
+    rgba(0, 0, 0, 0.12) 2px,
+    transparent 2px,
+    transparent 26px
+  );
+  box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.25);
+}
+
+/* Card de livro como "lombada de livro" numa estante */
+.card-resumo {
+  background-color: var(--color-pergaminho-claro);
+  border: 1px solid #e0d2ad;
+  border-left: 6px solid var(--color-dourado);
+  box-shadow: 0 6px 10px -6px rgba(74, 47, 27, 0.45);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card-resumo:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 18px -8px rgba(74, 47, 27, 0.55);
+}
+
+/* "Prateleira" de madeira sob a grade de resultados */
+.prateleira {
+  border-bottom: 10px solid var(--color-madeira);
+  border-radius: 4px;
+  box-shadow: 0 8px 6px -8px rgba(0, 0, 0, 0.4);
+}
+
+/* ---- Animação: 3 livros em pé numa estante, pulando em onda ---- */
+/* Container reserva altura (livro mais alto + pulo) e desenha a prateleira. */
+.loading-estante {
+  position: relative;
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 3rem;
+  padding: 0 5px 8px;
+}
+
+/* Prateleira de madeira sob os livros */
+.loading-estante::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 6px;
+  border-radius: 2px;
+  background-color: var(--color-madeira-escura);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.35);
+}
+
+/* Cada livro em pé (lombada vertical): topo arredondado + bandas de capa */
+.livro-pulando {
+  display: block;
+  width: 0.7rem;
+  border-radius: 3px 3px 1px 1px;
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.1),
+    inset 0 5px 0 -3px rgba(255, 255, 255, 0.4),
+    inset 0 -7px 0 -5px rgba(0, 0, 0, 0.2);
+  animation: pular-livro 0.9s ease-in-out infinite;
+}
+
+.livro-pulando:nth-child(1) {
+  height: 2rem;
+  background-color: var(--color-madeira);
+  animation-delay: 0s;
+}
+
+.livro-pulando:nth-child(2) {
+  height: 2.5rem;
+  background-color: var(--color-dourado);
+  animation-delay: 0.15s;
+}
+
+.livro-pulando:nth-child(3) {
+  height: 2.2rem;
+  background-color: var(--color-madeira-escura);
+  animation-delay: 0.3s;
+}
+
+@keyframes pular-livro {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-0.4rem);
+  }
 }

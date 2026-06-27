@@ -1,18 +1,22 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
+import type { Livro } from "../interfaces/Livro";
 import CardLivro from "../components/CardLivro";
-import useRecuperarLivroPorIsbn from "../hooks/livro/useRecuperarLivroPorIsbn";
+import useRecuperarLivroPorOlid from "../hooks/livro/useRecuperarLivroPorOlid";
 
 const LivroPage = () => {
-  const { isbn } = useParams();
+  const { olid } = useParams();
+  const location = useLocation();
+  const livroDoState = location.state?.livro as Livro | undefined;
 
+  // Caminho normal: o livro chega pela navegação (state) a partir da pesquisa.
+  // Fallback (F5/URL direta): recupera por OLID. Enquanto o backend de detalhe
+  // não existe, recuperarLivroPorOlid lê do mock.
   const {
-    data: livro,
+    data: livroRecuperado,
     isPending: recuperandoLivro,
-    error: errorRecuperarLivro,
-  } = useRecuperarLivroPorIsbn(isbn ?? "");
+  } = useRecuperarLivroPorOlid(livroDoState ? "" : (olid ?? ""));
 
-  if (errorRecuperarLivro) throw errorRecuperarLivro;
-  if (recuperandoLivro) return <p className="text-gray-600">Recuperando livro...</p>;
+  const livro = livroDoState ?? livroRecuperado;
 
   return (
     <div className="mx-auto max-w-3xl">
@@ -20,7 +24,15 @@ const LivroPage = () => {
         ← Voltar para a pesquisa
       </Link>
 
-      <CardLivro livro={livro} />
+      {livro ? (
+        <CardLivro livro={livro} />
+      ) : recuperandoLivro && !livroDoState ? (
+        <p className="mt-4 text-gray-600">Recuperando livro...</p>
+      ) : (
+        <p className="mt-4 text-gray-600">
+          Não foi possível carregar este livro. Abra-o a partir da pesquisa.
+        </p>
+      )}
     </div>
   );
 };
