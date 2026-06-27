@@ -42,7 +42,7 @@ const CardLivro = ({ livro }: Props) => {
   const subtitle = obterSubtituloValido(livro.subtitle);
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+    <div className="rounded-lg border border-[#e0d2ad] bg-[#fbf6ea] p-4 shadow-sm">
       <div className="flex gap-4">
         <img
           src={livro.coverId

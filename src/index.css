@@ -1,7 +1,22 @@
 @import "tailwindcss";
 
+/* Paleta "estante / biblioteca": madeira + pergaminho + dourado */
+@theme {
+  --color-pergaminho: #f4ecd9;
+  --color-pergaminho-claro: #fbf6ea;
+  --color-madeira: #7b4f2c;
+  --color-madeira-escura: #4a2f1b;
+  --color-dourado: #c08a2d;
+  --color-tinta: #3b2f23;
+}
+
+body {
+  background-color: var(--color-pergaminho);
+  color: var(--color-tinta);
+}
+
 .btn-primary {
-    @apply rounded-lg bg-blue-700 px-4 py-2 text-white hover:bg-blue-800 not-disabled:cursor-pointer disabled:cursor-not-allowed disabled:opacity-50;
+    @apply rounded-lg bg-[#7b4f2c] px-4 py-2 text-[#fbf6ea] hover:bg-[#4a2f1b] not-disabled:cursor-pointer disabled:cursor-not-allowed disabled:opacity-50;
 }
 
 .btn-secondary {
@@ -9,5 +24,84 @@
 }
 
 .input {
-    @apply w-full rounded-lg border-2 border-gray-400 p-2 text-base outline-none focus:border-gray-800;
+    @apply w-full rounded-lg border-2 border-[#c8a96a] bg-[#fbf6ea] p-2 text-base outline-none focus:border-[#7b4f2c];
+}
+
+/* Barra de navegação com cara de prateleira de madeira */
+.navbar-estante {
+  background-color: var(--color-madeira-escura);
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.12) 0px,
+    rgba(0, 0, 0, 0.12) 2px,
+    transparent 2px,
+    transparent 26px
+  );
+  box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.25);
+}
+
+/* Card de livro como "lombada de livro" numa estante */
+.card-resumo {
+  background-color: var(--color-pergaminho-claro);
+  border: 1px solid #e0d2ad;
+  border-left: 6px solid var(--color-dourado);
+  box-shadow: 0 6px 10px -6px rgba(74, 47, 27, 0.45);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card-resumo:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 18px -8px rgba(74, 47, 27, 0.55);
+}
+
+/* "Prateleira" de madeira sob a grade de resultados */
+.prateleira {
+  border-bottom: 10px solid var(--color-madeira);
+  border-radius: 4px;
+  box-shadow: 0 8px 6px -8px rgba(0, 0, 0, 0.4);
+}
+
+/* ---- Animação de carregamento: 3 livros pulsando em onda ---- */
+.loading-livros {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.4rem;
+}
+
+.livro-pulando {
+  display: inline-block;
+  width: 0.6rem;
+  border-radius: 2px 2px 0 0;
+  transform-origin: bottom center;
+  animation: pulsar-livro 0.9s ease-in-out infinite;
+}
+
+.livro-pulando:nth-child(1) {
+  height: 1.4rem;
+  background-color: var(--color-madeira);
+  animation-delay: 0s;
+}
+
+.livro-pulando:nth-child(2) {
+  height: 1.9rem;
+  background-color: var(--color-dourado);
+  animation-delay: 0.15s;
+}
+
+.livro-pulando:nth-child(3) {
+  height: 1.6rem;
+  background-color: var(--color-madeira-escura);
+  animation-delay: 0.3s;
+}
+
+@keyframes pulsar-livro {
+  0%,
+  100% {
+    transform: scaleY(1);
+    opacity: 0.65;
+  }
+  50% {
+    transform: scaleY(1.5);
+    opacity: 1;
+  }
 }

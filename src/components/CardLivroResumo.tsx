@@ -18,7 +18,7 @@ const CardLivroResumo = ({ livro }: Props) => {
     <Link
       to={"/livros/" + livro.OLid}
       state={{ livro }}
-      className="block rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition hover:shadow-md"
+      className="card-resumo block rounded-lg p-4"
     >
       <div className="flex gap-4">
         <img
